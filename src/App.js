@@ -28,7 +28,6 @@ function App() {
       )
       )}
      </Buttonbox>
-     <div>APP</div>
      </Wrapper></b>
       
    

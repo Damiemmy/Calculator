@@ -32,10 +32,11 @@ const Button = ({value}) => {
   //User click Number
   const handleClickButton=()=>{
     const numberString=value.toString()
-    
+
     let numberValue;
     if(numberString==='0' && calc.num ===0){
       numberValue="0"
+      alert('0 already included')
     } else{
       numberValue=Number(calc.num + numberString)
     }
@@ -46,6 +47,56 @@ const Button = ({value}) => {
       num:numberValue
     })
   }
+  //User Percentage Click
+  const percentClick=()=>{
+    setCalc({
+      num:(calc.num/100),
+      res:(calc.res/100),
+      sign:'',
+
+    })
+
+  }
+  //User equals Click
+  const equalsClick=()=>{
+    if (calc.res && calc.num){
+      const math =(a,b,sign)=>{
+        const result = {
+          '+':(a,b)=> a+b,
+          '-':(a,b)=> a-b,
+          '/':(a,b)=> a/b,
+          'x':(a,b)=> a*b,
+        }
+        return result[sign](a,b);
+      }
+      
+      setCalc({
+        res: math(calc.res,calc.num,calc.sign),
+        sign:"",
+        num:0
+      })
+    }
+    
+  }
+  // User invert Click function
+  const invertClick=()=>{
+    setCalc({
+      num:calc.num?calc.num * -1:0,
+      res:calc.num?calc.num * -1:0,
+      sign:'',
+    })
+  }
+  
+  //User click operation
+  const signClick=()=>{
+
+    setCalc({
+      sign:value,
+      res:!calc.res && calc.num? calc.num :calc.res,
+      num:0
+    
+    })
+  }
   const handlebtnclick=()=>{
 
     
@@ -54,6 +105,13 @@ const Button = ({value}) => {
     const results={
       '.':commaClick,
       'C':resetClick,
+      '+':signClick,
+      '-':signClick,
+      '/':signClick,
+      'x':signClick,
+      '=':equalsClick,
+      '%':percentClick,
+      '+-':invertClick,
     }
     if(results[value]){
       return results[value]()
